@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+	<string name="app_name">Flamingos</string>
+
+	<string name="activity_sample_code">Flamingo</string>
+
+	<!-- =============================== -->
+	<!--  ReportLayout.java/xml Strings  -->
+	<!-- =============================== -->
+
+	<string name="take_picture">Take Picture</string>
+	<string name="lower_bound">Lower Estimate</string>
+	<string name="higher_bound">Higher Estimate</string>
+	<string name="agreed_estimate">Final Estimate</string>
+
+	<string name="camera">Take Photo</string>
+
+	<string name="proceed">Save and Continue</string>
+
+	<!-- =============================== -->
+	<!--  ReviewLayout.java/xml Strings  -->
+	<!-- =============================== -->
+
+    <string name="no_report">No Reports Recorded</string>
+
+</resources>

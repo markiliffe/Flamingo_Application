@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<!--
+		This layout file fixes the layout for the report tab.
+	-->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+
+	<LinearLayout android:orientation="vertical"
+		android:layout_width="fill_parent" android:layout_height="wrap_content">
+
+		<!--
+		Provide notes of introduction
+		-->
+
+
+		<!--
+		Lower Bounds
+		-->
+
+		<TextView android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:layout_marginTop="5dip"
+			android:text="@string/lower_bound" android:textAppearance="?android:attr/textAppearanceLarge"
+			android:textColor="?android:attr/textColorTertiary"
+			android:focusable="true" />
+
+		<EditText android:id="@+id/lower" android:layout_width="fill_parent"
+			android:layout_height="wrap_content" />
+
+		<!--
+		Higher Bounds
+		-->
+
+		<TextView android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:layout_marginTop="5dip"
+			android:text="@string/higher_bound" android:textAppearance="?android:attr/textAppearanceLarge"
+			android:textColor="?android:attr/textColorTertiary"
+			android:focusable="true" />
+
+		<EditText android:id="@+id/upper" android:layout_width="fill_parent"
+			android:layout_height="wrap_content" />
+
+		<!--
+		Recorded Count
+		-->
+
+		<TextView android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:layout_marginTop="5dip"
+			android:text="@string/agreed_estimate" android:textAppearance="?android:attr/textAppearanceLarge"
+			android:textColor="?android:attr/textColorTertiary"
+			android:focusable="true" />
+
+		<EditText android:id="@+id/estimate" android:layout_width="fill_parent"
+			android:layout_height="wrap_content" />
+
+		<!--
+		Continue Button
+		-->
+
+		<Button android:id="@+id/button" android:text="@string/camera"
+			android:layout_width="wrap_content" android:layout_height="wrap_content" />
+
+		<!--
+		Continue Button
+		-->
+
+		<Button android:id="@+id/button" android:text="@string/proceed"
+			android:layout_width="wrap_content" android:layout_height="wrap_content" />
+
+		<Spinner android:id="@+id/spinner1" android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:drawSelectorOnTop="true" />
+
+	</LinearLayout>
+
+</ScrollView>
