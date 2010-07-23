@@ -12,15 +12,7 @@ import android.location.LocationManager;
 import android.content.Context; 
 import android.widget.Button;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
-import android.hardware.Camera;
-import android.hardware.Camera.PictureCallback;
-import android.hardware.Camera.ShutterCallback;
-import android.util.Log;
-import android.widget.FrameLayout;
+//import android.widget.FrameLayout;
 
 import com.android.flamingo.R;
 
@@ -47,11 +39,7 @@ public class ReportTab extends Activity{
 	EditText _lower; 
 	EditText _upper;
 	EditText _agreed;
-
-	private static final String TAG = "CameraDemo";
-
-	Camera camera;
-	Preview preview;
+	
 	Spinner lakeSpinner; 
 	Button save, photo, calibrate;
 
@@ -68,19 +56,11 @@ public class ReportTab extends Activity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.reportlayout);
 		
-		preview = new Preview(this);
-		//Take a photo
-		
-		//((FrameLayout) findViewById(R.id.preview)).addView(preview);
-
-		
 		lakeSpinner = (Spinner) findViewById(R.id.spinner);
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, lakeNames);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		lakeSpinner.setAdapter(adapter);
 
-
-		
 		Button photo = (Button)findViewById(R.id.photo);
 		photo.setOnClickListener(new View.OnClickListener() {
 
@@ -88,8 +68,7 @@ public class ReportTab extends Activity{
 				//				Bundle bundle = new Bundle();
 				//				float tempX = Float.parseFloat((String)bundle.get("xAxis"));
 				//				Toast.makeText(ReportTab.this,"Photo " + Float.toString(tempX), Toast.LENGTH_LONG).show();
-				Toast.makeText(ReportTab.this,"Photo Taken", Toast.LENGTH_LONG).show();
-				//preview.camera.takePicture(shutterCallback, rawCallback,jpegCallback);
+				Toast.makeText(ReportTab.this,"Photo Taken", Toast.LENGTH_LONG).show();			
 				
 				//Trig for the photo attributes
 			}
@@ -110,48 +89,11 @@ public class ReportTab extends Activity{
 				agreed = Integer.parseInt(_agreed.getText().toString());
 				//Run the save method
 				onSave();
+				
 			}
 		});
 	}
-
-	ShutterCallback shutterCallback = new ShutterCallback() {
-		public void onShutter() {
-			Log.d(TAG, "onShutter'd");
-		}
-	};
-
-	/** Handles data for raw picture */
-	PictureCallback rawCallback = new PictureCallback() {
-		public void onPictureTaken(byte[] data, Camera camera) {
-			Log.d(TAG, "onPictureTaken - raw");
-		}
-	};
-
-	/** Handles data for jpeg picture */
-	PictureCallback jpegCallback = new PictureCallback() {
-		public void onPictureTaken(byte[] data, Camera camera) {
-			FileOutputStream outStream = null;
-			try {
-				// write to local sandbox file system
-				// outStream =
-				// CameraDemo.this.openFileOutput(String.format("%d.jpg",
-				// System.currentTimeMillis()), 0);
-				// Or write to sdcard
-				outStream = new FileOutputStream(String.format(
-						"/sdcard/%d.jpg", System.currentTimeMillis()));
-				outStream.write(data);
-				outStream.close();
-				Log.d(TAG, "onPictureTaken - wrote bytes: " + data.length);
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} finally {
-			}
-			Log.d(TAG, "onPictureTaken - jpeg");
-		}
-	};
-
+	
 	/**
 	 * This function when called snapshots the current state of the GPS and the accelerometers.  
 	 * 
@@ -257,7 +199,7 @@ public class ReportTab extends Activity{
 		//		zAxis = acceleromerValues[2];
 		reportDatabase.insert("(" + latitude + ", " + longitude + ", " + time + ", '" + spinnerState + "', " + lower + ", " + upper + ", " + agreed + ", " + getAlgorithmCount() + ", " + xAxis + ", " + yAxis + ", " + zAxis + ", " + altitude + ", "+ accuracy + ", 'photo');");
 		successfulOrNot(true,"Report Added");
-		reportDatabase.close();
+		//reportDatabase.close();
 		//Reset so all data taken in will be new
 		clean();
 	}

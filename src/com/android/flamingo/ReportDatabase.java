@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class ReportDatabase extends SQLiteOpenHelper {
+public class ReportDatabase {
 
 	private static Context context;
 	private SQLiteDatabase database;
@@ -26,7 +26,7 @@ public class ReportDatabase extends SQLiteOpenHelper {
 	 */
 
 	public ReportDatabase(Context context) {
-		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+		//super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		ReportDatabase.context = context;
 		OpenHelper openHelper = new OpenHelper(ReportDatabase.context);
 		this.database = openHelper.getWritableDatabase();
@@ -47,6 +47,7 @@ public class ReportDatabase extends SQLiteOpenHelper {
 
 	public void insert(String name){
 		this.database.execSQL("INSERT INTO " + TABLE_NAME + "(latitude, longitude, time, lake, lower_estimate, higher_estimate, agreed_estimate, algorithm_count, xaxis, yaxis, zaxis, altitude, accuracy, photo_identifier) VALUES " + name);
+		this.database.close();
 	}
 
 	/**
@@ -82,7 +83,6 @@ public class ReportDatabase extends SQLiteOpenHelper {
 				tempReports.add(new ReportInstanceQuery(columnTime, columnLake, columnLowerEstimate, columnHigherEstimate, columnAgreedEstimate, columnAlgorithmCount));
 			} while (c.moveToNext());
 		}
-		reportDatabase.close();
 		return tempReports;
 	}
 
@@ -103,15 +103,6 @@ public class ReportDatabase extends SQLiteOpenHelper {
 	public void delete(){
 		this.database.delete(TABLE_NAME, null, null);
 	}
-
-	@Override
-	public void onCreate(SQLiteDatabase database) {        
-	}
-
-	@Override
-	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {		
-	}
-
 
 	private static class OpenHelper extends SQLiteOpenHelper {
 

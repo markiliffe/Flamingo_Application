@@ -23,7 +23,7 @@ public class ReviewTab extends ListActivity {
 		super.onCreate(savedInstanceState);
 
 		//Open Database
-		ReviewTab.reportDatabase = ReportDatabase.open(this);
+		ReviewTab.reportDatabase = new ReportDatabase(this);
 		Vector<ReportInstanceQuery> reportReview = reportDatabase.reportSelect();
 		String[] reports = null;
 		for(int i=0;i<=reportReview.size();i++){
