@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.android.flamingo" android:versionCode="1"
 	android:versionName="1.0">
-	<application android:icon="@drawable/icon" android:label="@string/app_name">
-
+	<application android:icon="@drawable/icon" android:label="@string/app_name"
+		android:debuggable="true">
 		<activity android:name=".HelloFlamingos">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
@@ -32,8 +32,14 @@
 			</intent-filter>
 		</activity>
 
+		<activity android:name=".SettingsTab" android:label="@string/app_name">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.TAB" />
+			</intent-filter>
+		</activity>
+
 	</application>
 	<uses-sdk android:minSdkVersion="3" />
-	<uses-permission android:name="android.permission.ACCESS_GPS"> </uses-permission> <uses-permission android:name="android.permission.ACCESS_LOCATION"> </uses-permission>
-
+	<uses-permission android:name="android.permission.CAMERA" />
 </manifest> 

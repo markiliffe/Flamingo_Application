@@ -1,6 +1,9 @@
 package com.android.flamingo;
 
+import java.util.Vector;
+
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -9,6 +12,8 @@ public class ReportDatabase extends SQLiteOpenHelper {
 
 	private static Context context;
 	private SQLiteDatabase database;
+
+	static ReportDatabase reportDatabase;
 
 	private static final String DATABASE_NAME = "flamingo_reports";
 	private static final int DATABASE_VERSION = 1;
@@ -27,6 +32,13 @@ public class ReportDatabase extends SQLiteOpenHelper {
 		this.database = openHelper.getWritableDatabase();
 	}
 
+	static ReportDatabase open(Context c){
+		if(reportDatabase == null){
+			reportDatabase = new ReportDatabase(ReportDatabase.context);
+			return reportDatabase;
+		}
+		return reportDatabase;
+	}
 
 	/**
 	 * 
@@ -44,9 +56,43 @@ public class ReportDatabase extends SQLiteOpenHelper {
 	 * @return
 	 */
 
-	public String[][] reportSelect(){
-		String tempReport[][] = null;	
-		return tempReport;
+	public Vector<ReportInstanceQuery> reportSelect(){
+		Vector<ReportInstanceQuery> tempReports = new Vector<ReportInstanceQuery>();
+
+		Cursor c = database.rawQuery("SELECT id,time,lake,lower_estimate,higher_estimate,agreed_estimate,algorithm_count FROM" + TABLE_NAME + ";",null);
+		int indexTime = c.getColumnIndex("time");
+		int indexLake = c.getColumnIndex("lake");
+		int indexLowerEstimate = c.getColumnIndex("lower_estimate");
+		int indexHigherEstimate = c.getColumnIndex("higher_estimate");
+		int indexAgreedEstimate = c.getColumnIndex("agreed_estimate");
+		int indexAlgorithmCount = c.getColumnIndex("algorithm_count");
+
+
+		if (c != null){
+			int i = 0;
+			do {
+				i++;
+				int columnTime = c.getInt(indexTime);
+				String columnLake = c.getString(indexLake);
+				int columnLowerEstimate = c.getInt(indexLowerEstimate);
+				int columnHigherEstimate = c.getInt(indexHigherEstimate);
+				int columnAgreedEstimate = c.getInt(indexAgreedEstimate);
+				int columnAlgorithmCount = c.getInt(indexAlgorithmCount);
+
+				tempReports.add(new ReportInstanceQuery(columnTime, columnLake, columnLowerEstimate, columnHigherEstimate, columnAgreedEstimate, columnAlgorithmCount));
+			} while (c.moveToNext());
+		}
+		reportDatabase.close();
+		return tempReports;
+	}
+
+	/**
+	 * This method connects to the database  
+	 * 
+	 */
+
+	public void CSVReportSelect(){
+
 	}
 
 	/**

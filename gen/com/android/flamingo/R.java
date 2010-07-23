@@ -19,37 +19,57 @@ public final class R {
         public static final int ic_menu_info_details_white=0x7f020005;
         public static final int ic_menu_mapmode_grey=0x7f020006;
         public static final int ic_menu_mapmode_white=0x7f020007;
-        public static final int ic_review_tab=0x7f020008;
-        public static final int icon=0x7f020009;
+        public static final int ic_menu_settings_grey=0x7f020008;
+        public static final int ic_review_tab=0x7f020009;
+        public static final int icon=0x7f02000a;
     }
     public static final class id {
-        public static final int button=0x7f050003;
+        public static final int accuracy_label=0x7f050008;
+        public static final int calibrate_button=0x7f05000c;
         public static final int estimate=0x7f050002;
         public static final int lower=0x7f050000;
-        public static final int output_text=0x7f050006;
-        public static final int save=0x7f050005;
-        public static final int spinner=0x7f050004;
-        public static final int spinner1=0x7f050007;
+        public static final int output_text=0x7f050007;
+        public static final int photo=0x7f050004;
+        public static final int preview=0x7f050003;
+        public static final int save=0x7f050006;
+        public static final int spinner=0x7f050005;
         public static final int upper=0x7f050001;
+        public static final int x_label=0x7f050009;
+        public static final int y_label=0x7f05000a;
+        public static final int z_label=0x7f05000b;
     }
     public static final class layout {
         public static final int main=0x7f030000;
         public static final int reportlayout=0x7f030001;
         public static final int reviewlayout=0x7f030002;
+        public static final int settings=0x7f030003;
     }
     public static final class string {
+        /**  =============================== 
+  Settings.java/xml Strings  
+ =============================== 
+         */
+        public static final int accelerometer=0x7f040009;
+        public static final int accuracy_high=0x7f04000e;
+        public static final int accuracy_low=0x7f04000c;
+        public static final int accuracy_medium=0x7f04000d;
+        public static final int accuracy_unknown=0x7f04000a;
+        public static final int accuracy_unreliable=0x7f04000b;
         public static final int activity_sample_code=0x7f040001;
         public static final int agreed_estimate=0x7f040005;
         public static final int app_name=0x7f040000;
+        public static final int calibrate=0x7f040011;
         public static final int camera=0x7f040006;
         public static final int higher_bound=0x7f040004;
         public static final int lower_bound=0x7f040003;
+        public static final int no_accelerometer=0x7f04000f;
         /**  =============================== 
   ReviewLayout.java/xml Strings  
  =============================== 
          */
         public static final int no_report=0x7f040008;
         public static final int proceed=0x7f040007;
+        public static final int sensor_list=0x7f040010;
         /**  =============================== 
   ReportLayout.java/xml Strings  
  =============================== 

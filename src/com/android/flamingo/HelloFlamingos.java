@@ -28,10 +28,10 @@ public class HelloFlamingos extends TabActivity {
 		Resources res = getResources();
 		final TabHost tabHost = getTabHost();
 
-		tabHost.addTab(tabHost.newTabSpec("tab1").setIndicator("New Report", res.getDrawable(R.drawable.ic_menu_camera_grey))
+		tabHost.addTab(tabHost.newTabSpec("tab1").setIndicator("Report", res.getDrawable(R.drawable.ic_menu_camera_grey))
 				.setContent(new Intent(this, ReportTab.class)));
 
-		tabHost.addTab(tabHost.newTabSpec("tab2").setIndicator("Reports", res.getDrawable(R.drawable.ic_menu_info_details_grey))
+		tabHost.addTab(tabHost.newTabSpec("tab2").setIndicator("Review", res.getDrawable(R.drawable.ic_menu_info_details_grey))
 				.setContent(new Intent(this, ReviewTab.class)));
 
 		// This tab sets the intent flag so that it is recreated each time
@@ -39,6 +39,9 @@ public class HelloFlamingos extends TabActivity {
 		tabHost.addTab(tabHost.newTabSpec("tab3").setIndicator("Map", res.getDrawable(R.drawable.ic_menu_mapmode_grey))
 				.setContent(new Intent(this, MapTab.class)
 				.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)));
-	
+		
+		tabHost.addTab(tabHost.newTabSpec("tab4").setIndicator("Settings",res.getDrawable(R.drawable.ic_menu_settings_grey))
+				.setContent(new Intent(this, SettingsTab.class)));
+		
 	}
 }

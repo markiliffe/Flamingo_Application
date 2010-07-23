@@ -1,7 +1,10 @@
 package com.android.flamingo;
 
+//Import Packages
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
@@ -9,52 +12,145 @@ import android.location.LocationManager;
 import android.content.Context; 
 import android.widget.Button;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import android.hardware.Camera;
+import android.hardware.Camera.PictureCallback;
+import android.hardware.Camera.ShutterCallback;
+import android.util.Log;
+import android.widget.FrameLayout;
+
 import com.android.flamingo.R;
 
 /**
  * This class acts as a launcher for the camera, and as soon as the camera takes a picture
  * snapshots the status of the GPS, Accelerometers and Time of the device, passing information 
- * upto the reports Vector situated HelloFlamingos.java file.
+ * up to the reports Vector situated HelloFlamingos.java file.
  */
 
-public class ReportTab extends Activity {
+public class ReportTab extends Activity{
 
 	double latitude = 0.0;
 	double longitude = 0.0;
 	long time = 0;
 	double accuracy = 0.0;
 	double altitude = 0.0;
-	double xAxis = 0.0;
-	double yAxis = 0.0;
-	double zAxis = 0.0;
+	double xAxis = 10.0;
+	double yAxis = 10.0;
+	double zAxis = 10.0;
 
-	Spinner s1;
-	Button save;
+	int lower;
+	int upper;
+	int agreed;
+	EditText _lower; 
+	EditText _upper;
+	EditText _agreed;
+
+	private static final String TAG = "CameraDemo";
+
+	Camera camera;
+	Preview preview;
+	Spinner lakeSpinner; 
+	Button save, photo, calibrate;
 
 	String spinnerState;
-	
-	private ReportDatabase reportDatabase;
-	
+
+	static ReportDatabase reportDatabase;
+
 	//Names of the lake to populate the spinner
 	private static final String[] lakeNames = {
 		"Baringo", "Bogoria", "Elementaita", "Magadi", "Naivasha", "Nakuru", "Oloiden" , "Turkana"
 	};
-	
+
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.reportlayout);
 		
-		s1 = (Spinner) findViewById(R.id.spinner);
+		preview = new Preview(this);
+		//Take a photo
+		
+		//((FrameLayout) findViewById(R.id.preview)).addView(preview);
+
+		
+		lakeSpinner = (Spinner) findViewById(R.id.spinner);
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, lakeNames);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		s1.setAdapter(adapter);
+		lakeSpinner.setAdapter(adapter);
 
-		@SuppressWarnings("unused")
-		Button save = (Button) findViewById(R.id.save);
-		spinnerState = getLakeSpinnerState();
-		onSave();
+
 		
+		Button photo = (Button)findViewById(R.id.photo);
+		photo.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View v) {
+				//				Bundle bundle = new Bundle();
+				//				float tempX = Float.parseFloat((String)bundle.get("xAxis"));
+				//				Toast.makeText(ReportTab.this,"Photo " + Float.toString(tempX), Toast.LENGTH_LONG).show();
+				Toast.makeText(ReportTab.this,"Photo Taken", Toast.LENGTH_LONG).show();
+				//preview.camera.takePicture(shutterCallback, rawCallback,jpegCallback);
+				
+				//Trig for the photo attributes
+			}
+		});
+
+		//The save method
+		Button save = (Button) findViewById(R.id.save);
+		save.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View arg0) {
+				//get the lower estimate
+				_lower = (EditText)findViewById(R.id.lower);
+				lower = Integer.parseInt(_lower.getText().toString());
+				//get the higher estimate
+				_upper = (EditText)findViewById(R.id.upper);
+				upper = Integer.parseInt(_upper.getText().toString());
+				//get the agreed estimate
+				_agreed = (EditText)findViewById(R.id.estimate);
+				agreed = Integer.parseInt(_agreed.getText().toString());
+				//Run the save method
+				onSave();
+			}
+		});
 	}
+
+	ShutterCallback shutterCallback = new ShutterCallback() {
+		public void onShutter() {
+			Log.d(TAG, "onShutter'd");
+		}
+	};
+
+	/** Handles data for raw picture */
+	PictureCallback rawCallback = new PictureCallback() {
+		public void onPictureTaken(byte[] data, Camera camera) {
+			Log.d(TAG, "onPictureTaken - raw");
+		}
+	};
+
+	/** Handles data for jpeg picture */
+	PictureCallback jpegCallback = new PictureCallback() {
+		public void onPictureTaken(byte[] data, Camera camera) {
+			FileOutputStream outStream = null;
+			try {
+				// write to local sandbox file system
+				// outStream =
+				// CameraDemo.this.openFileOutput(String.format("%d.jpg",
+				// System.currentTimeMillis()), 0);
+				// Or write to sdcard
+				outStream = new FileOutputStream(String.format(
+						"/sdcard/%d.jpg", System.currentTimeMillis()));
+				outStream.write(data);
+				outStream.close();
+				Log.d(TAG, "onPictureTaken - wrote bytes: " + data.length);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+			}
+			Log.d(TAG, "onPictureTaken - jpeg");
+		}
+	};
 
 	/**
 	 * This function when called snapshots the current state of the GPS and the accelerometers.  
@@ -71,7 +167,7 @@ public class ReportTab extends Activity {
 
 		//While it is not envisaged that accuracy of the GPS will play a great part in this iteration of the
 		//the project, it would be assumed that further iterations would look for greater accuracy to within 
-		//certain tolerance, even though just an arbitary value.
+		//certain tolerance, even though just an arbitrary value.
 		accuracy = location.getLastKnownLocation("gps").getAccuracy();
 
 	}
@@ -85,36 +181,8 @@ public class ReportTab extends Activity {
 	 */
 
 	public String getLakeSpinnerState(){		
-		int spinnerLocation = s1.getSelectedItemPosition();
+		int spinnerLocation = lakeSpinner.getSelectedItemPosition();
 		return lakeNames[spinnerLocation];
-	}
-
-	/**
-	 * This is the get method that captures what the user/group of users has decided is the lower estimate is.
-	 * 
-	 * @return
-	 */
-	public int getLowerEstimate(){
-		// CAPTURE THE VALUE OF THE LOWER ESTIMATE
-
-		int lowerEstimate = 0;
-
-		return lowerEstimate;
-	}
-
-	public int getHigherEstimate(){
-		// CAPTURE THE VALUE OF THE HIGHER ESTIMATE
-
-		int higherEstimate = 0;
-		return higherEstimate;
-	}
-
-	public int getAgreedEstimate(){
-		// CAPTURE THE VALUE OF THE AGREED ESTIMATE
-
-		int agreedEstimate = 0;
-
-		return agreedEstimate;
 	}
 
 	/**
@@ -133,7 +201,7 @@ public class ReportTab extends Activity {
 		zAxis = 0.0;
 
 	}
-	
+
 	/**
 	 * This method detects whether the upload of the report into the database was successful or not
 	 * by way of a toast,
@@ -141,17 +209,17 @@ public class ReportTab extends Activity {
 	 * 
 	 * @param isSucessful
 	 */
-	
-	public void successfulOrNot(boolean isSucessful){
-		
+
+	public void successfulOrNot(boolean isSucessful, String message){
+
 		if (isSucessful) {
-			Toast.makeText(ReportTab.this,"Report Sucessfully Added!", Toast.LENGTH_LONG).show();
+			Toast.makeText(ReportTab.this,message, Toast.LENGTH_LONG).show();
 		} else {
 			Toast.makeText(ReportTab.this,"ARRRRRRRRGH!!!", Toast.LENGTH_LONG).show();
 
 		}
 	}
-	
+
 	/**
 	 * This is where the image detection algorithm would be launched from...
 	 * 
@@ -159,11 +227,15 @@ public class ReportTab extends Activity {
 	 * 
 	 * @return Census Count
 	 */
-	
+
 	public int getAlgorithmCount(){
 		int censusCount = 0;
 		return censusCount;
 	}
+
+	public void onPhoto(){
+	}
+
 
 	/**
 	 * The onSave() method writes to the database the resets the class variables by calling the clean() method.
@@ -172,15 +244,20 @@ public class ReportTab extends Activity {
 	 */
 
 	public void onSave(){
-		
+		//Get the spinner value
+		spinnerState = getLakeSpinnerState();
+
 		//Open a connection to the database then insert this information into it.
-		this.reportDatabase = new ReportDatabase(this);
-		this.reportDatabase.insert("(" + latitude + ", " + longitude + ", " + time + ", '" + getLakeSpinnerState() + "', " + getLowerEstimate() + ", " + getHigherEstimate() + ", " + getAgreedEstimate() + ", " + getAlgorithmCount() + ", " + xAxis + ", " + yAxis + ", " + zAxis + ", " + altitude + ", "+ accuracy + ", 'photo');");
-		
-		/*Currently there is no way to make this false. It is included if I get time to fix it. It exists to give a user feedback that their report was
-		successfully added - especially to those unfamiliar with the platform - is very important.*/
-		successfulOrNot(true);
-		
+		ReportTab.reportDatabase = new ReportDatabase(this);
+		//ReportTab.reportDatabase = ReportDatabase.open(this);
+		//reportDatabase = ReportDatabase.open(this);
+		//		float[] acceleromerValues = SettingsTab.getAccelerometer();
+		//		xAxis = acceleromerValues[0];
+		//		yAxis = acceleromerValues[1];
+		//		zAxis = acceleromerValues[2];
+		reportDatabase.insert("(" + latitude + ", " + longitude + ", " + time + ", '" + spinnerState + "', " + lower + ", " + upper + ", " + agreed + ", " + getAlgorithmCount() + ", " + xAxis + ", " + yAxis + ", " + zAxis + ", " + altitude + ", "+ accuracy + ", 'photo');");
+		successfulOrNot(true,"Report Added");
+		reportDatabase.close();
 		//Reset so all data taken in will be new
 		clean();
 	}
