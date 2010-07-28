@@ -20,39 +20,54 @@
 		-->
 
 		<TextView android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:layout_marginTop="5dip"
-			android:text="@string/lower_bound" android:textAppearance="?android:attr/textAppearanceLarge"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="5dip"
+			android:text="@string/lower_bound"
+			android:textAppearance="?android:attr/textAppearanceMedium"
 			android:textColor="?android:attr/textColorTertiary"
 			android:focusable="true" />
 
-		<EditText android:id="@+id/lower" android:layout_width="fill_parent"
-			android:layout_height="wrap_content" />
+		<EditText android:id="@+id/lower"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:numeric="integer"
+			android:maxLength="7" />
 
 		<!--
 		Higher Bounds
 		-->
 
 		<TextView android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:layout_marginTop="5dip"
-			android:text="@string/higher_bound" android:textAppearance="?android:attr/textAppearanceLarge"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="5dip"
+			android:text="@string/higher_bound"
+			android:textAppearance="?android:attr/textAppearanceMedium"
 			android:textColor="?android:attr/textColorTertiary"
 			android:focusable="true" />
 
-		<EditText android:id="@+id/upper" android:layout_width="fill_parent"
-			android:layout_height="wrap_content" />
+		<EditText android:id="@+id/upper"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:numeric="integer"
+			android:maxLength="7" />
 
 		<!--
 		Recorded Count
 		-->
 
 		<TextView android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:layout_marginTop="5dip"
-			android:text="@string/agreed_estimate" android:textAppearance="?android:attr/textAppearanceLarge"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="5dip"
+			android:text="@string/agreed_estimate"
+			android:textAppearance="?android:attr/textAppearanceMedium"
 			android:textColor="?android:attr/textColorTertiary"
 			android:focusable="true" />
 
-		<EditText android:id="@+id/estimate" android:layout_width="fill_parent"
-			android:layout_height="wrap_content" />
+		<EditText android:id="@+id/estimate"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:numeric="integer"
+			android:maxLength="7" />
 
 
 		<!--
@@ -60,28 +75,48 @@
 		-->
 
 		<SurfaceView android:id="@+id/preview"
-			android:layout_width="fill_parent" android:layout_height="fill_parent">
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent">
 		</SurfaceView>
 
-		<Button android:id="@+id/photo" android:text="@string/camera"
-			android:layout_width="wrap_content" android:layout_height="fill_parent" />
+		<Button android:id="@+id/photo"
+			android:text="@string/camera"
+			android:layout_width="wrap_content"
+			android:layout_height="fill_parent" />
+
+		<!--
+		Geo Data Button
+		-->
+
+		<Button android:id="@+id/getgeodata"
+			android:text="@string/getgeodata"
+			android:layout_width="wrap_content"
+			android:layout_height="fill_parent" />
+
+
 
 		<!--
 		Select Environment Spinner
 		-->
 
-		<Spinner android:id="@+id/spinner" android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:drawSelectorOnTop="true" />
+		<Spinner android:id="@+id/spinner"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:drawSelectorOnTop="true" />
 
 		<!--
 		Continue Button
 		-->
 
-		<Button android:id="@+id/save" android:text="@string/proceed"
-			android:layout_width="wrap_content" android:layout_height="wrap_content" />
+		<Button android:id="@+id/save"
+			android:text="@string/proceed"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
 
-		<TextView android:id="@+id/output_text" android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:text="" />
+		<TextView android:id="@+id/output_text"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="" />
 
 	</LinearLayout>
 

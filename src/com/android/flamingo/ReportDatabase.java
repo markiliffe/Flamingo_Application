@@ -25,7 +25,7 @@ public class ReportDatabase {
 	 * @param context
 	 */
 
-	public ReportDatabase(Context context) {
+	private ReportDatabase(Context context) {
 		//super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		ReportDatabase.context = context;
 		OpenHelper openHelper = new OpenHelper(ReportDatabase.context);
@@ -55,40 +55,6 @@ public class ReportDatabase {
 	 * 
 	 * 
 	 * @return
-	 */
-
-	public Vector<ReportInstanceQuery> reportSelect(){
-		Vector<ReportInstanceQuery> tempReports = new Vector<ReportInstanceQuery>();
-
-		Cursor c = database.rawQuery("SELECT id,time,lake,lower_estimate,higher_estimate,agreed_estimate,algorithm_count FROM" + TABLE_NAME + ";",null);
-		int indexTime = c.getColumnIndex("time");
-		int indexLake = c.getColumnIndex("lake");
-		int indexLowerEstimate = c.getColumnIndex("lower_estimate");
-		int indexHigherEstimate = c.getColumnIndex("higher_estimate");
-		int indexAgreedEstimate = c.getColumnIndex("agreed_estimate");
-		int indexAlgorithmCount = c.getColumnIndex("algorithm_count");
-
-
-		if (c != null){
-			int i = 0;
-			do {
-				i++;
-				int columnTime = c.getInt(indexTime);
-				String columnLake = c.getString(indexLake);
-				int columnLowerEstimate = c.getInt(indexLowerEstimate);
-				int columnHigherEstimate = c.getInt(indexHigherEstimate);
-				int columnAgreedEstimate = c.getInt(indexAgreedEstimate);
-				int columnAlgorithmCount = c.getInt(indexAlgorithmCount);
-
-				tempReports.add(new ReportInstanceQuery(columnTime, columnLake, columnLowerEstimate, columnHigherEstimate, columnAgreedEstimate, columnAlgorithmCount));
-			} while (c.moveToNext());
-		}
-		return tempReports;
-	}
-
-	/**
-	 * This method connects to the database  
-	 * 
 	 */
 
 	public void CSVReportSelect(){

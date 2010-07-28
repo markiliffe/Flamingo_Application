@@ -145,7 +145,7 @@ public class ReportTab extends Activity{
 	}
 
 	/**
-	 * This method detects whether the upload of the report into the database was successful or not
+	 * This method detects (informs, shirley?) whether the upload of the report into the database was successful or not
 	 * by way of a toast,
 	 * 
 	 * 
@@ -190,7 +190,7 @@ public class ReportTab extends Activity{
 		spinnerState = getLakeSpinnerState();
 
 		//Open a connection to the database then insert this information into it.
-		ReportTab.reportDatabase = new ReportDatabase(this);
+		ReportTab.reportDatabase = ReportDatabase.open(this);
 		//ReportTab.reportDatabase = ReportDatabase.open(this);
 		//reportDatabase = ReportDatabase.open(this);
 		//		float[] acceleromerValues = SettingsTab.getAccelerometer();
