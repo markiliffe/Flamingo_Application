@@ -1,9 +1,7 @@
 package com.android.flamingo;
 
-import java.util.Vector;
 
 import android.app.ListActivity;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -11,15 +9,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 public class ReviewActivity extends ListActivity {
-	//private static ReportDatabase reportDatabase;
-
-	//private ReportDatabase reportDatabase;
-	//	ListView listView;
 
 	class ReviewViewBinder implements SimpleCursorAdapter.ViewBinder {
 		
@@ -52,13 +45,10 @@ public class ReviewActivity extends ListActivity {
 		}
 	}
 	
-	@SuppressWarnings("null")
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		//Open Database
-		//ReviewTab.reportDatabase = ReportDatabase.open(this);
-		//Vector<ReportInstanceQuery> tempReports = new Vector<ReportInstanceQuery>();
 		SQLiteDatabase db = ((FlamingoApplication) getApplication()).mOpenHelper.getWritableDatabase();
 
 		Cursor c = db.rawQuery("SELECT id AS _id, " +
@@ -69,41 +59,7 @@ public class ReviewActivity extends ListActivity {
 				"agreed_estimate, " +
 				"algorithm_count " +
 			"FROM report;", null);
-//		int indexTime = c.getColumnIndex("time");
-//		int indexLake = c.getColumnIndex("lake");
-//		int indexLowerEstimate = c.getColumnIndex("lower_estimate");
-//		int indexHigherEstimate = c.getColumnIndex("higher_estimate");
-//		int indexAgreedEstimate = c.getColumnIndex("agreed_estimate");
-//		int indexAlgorithmCount = c.getColumnIndex("algorithm_count");
-//
-//
-//		if (c != null){
-//			int i = 0;
-//			do {
-//				i++;
-//				int columnTime = c.getInt(indexTime);
-//				String columnLake = c.getString(indexLake);
-//				int columnLowerEstimate = c.getInt(indexLowerEstimate);
-//				int columnHigherEstimate = c.getInt(indexHigherEstimate);
-//				int columnAgreedEstimate = c.getInt(indexAgreedEstimate);
-//				int columnAlgorithmCount = c.getInt(indexAlgorithmCount);
-//
-//				tempReports.add(new ReportInstanceQuery(columnTime, columnLake, columnLowerEstimate, columnHigherEstimate, columnAgreedEstimate, columnAlgorithmCount));
-//			} while (c.moveToNext());
-//		}
-//		
-//		//Vector<ReportInstanceQuery> reportReview = reportDatabase.reportSelect();
-//		String[] reports = null;
-//		for(int i=0;i<=reportReview.size();i++){
-//			
-//			ReportInstanceQuery tempReport = (ReportInstanceQuery) reportReview.elementAt(i);
-//			String tempLake = tempReport.getLake();
-//			//String tempAgreedEstimate = Integer.toString(tempReport.getAgreedEstimate());
-//			//String time = Long.toString(tempReport.getTime());
-//			reports[i] = tempLake;// + " " + tempAgreedEstimate + " " + time;
-//		}
-//		
-//		setListAdapter(new ArrayAdapter<String>(this, R.layout.reviewlayout,reports));
+		
 		SimpleCursorAdapter sca = new SimpleCursorAdapter(this, R.layout.review_example_listentry, c,
 				new String[] {
 					"time",

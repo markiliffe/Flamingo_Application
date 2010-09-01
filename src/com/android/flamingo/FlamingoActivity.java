@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.os.Bundle;
-import android.util.Log;
+//import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,7 +19,7 @@ import android.widget.Toast;
 public class FlamingoActivity extends Activity {
 	
 	//Included for the ANDROID logcat
-	private static final String TAG = "FlamingoActivity";
+	//private static final String TAG = "FlamingoActivity";
 	static int REQUEST_PHOTO = 1;
 	static int REQUEST_GEODATA = 2;
 	
@@ -37,11 +37,17 @@ public class FlamingoActivity extends Activity {
 		"Baringo", "Bogoria", "Elementaita", "Magadi", "Naivasha", "Nakuru", "Oloiden" , "Turkana"
 	};
 	
+	/**
+	 * onCreate method, uses the assoiciated layout file, opens the database and pulls data
+	 * from the user, once it has been inputted.
+	 * 
+	 * 
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		// We're going to strip it bare, you'll have more freedom than you can handle!  -- ELER 66
+		// We're going to strip it bare, you'll have more freedom than you can handle!
 		setContentView(R.layout.reportlayout);
 		
 		Spinner lakeSpinner = (Spinner) findViewById(R.id.spinner);
@@ -52,9 +58,8 @@ public class FlamingoActivity extends Activity {
 		Button photo = (Button)findViewById(R.id.photo);
 		photo.setOnClickListener(new View.OnClickListener() {
 
+			//Launch the intent to get a photograph
 			public void onClick(View v) {
-				//				Bundle bundle = new Bundle();
-				//Bundle bundle = new Bundle();
 				Intent intent = new Intent(FlamingoActivity.this, FlamingoCamera.class);
 				startActivityForResult(intent, REQUEST_PHOTO);
 			}
@@ -62,10 +67,8 @@ public class FlamingoActivity extends Activity {
 		
 		Button getgeodata = (Button)findViewById(R.id.getgeodata);
 		getgeodata.setOnClickListener(new View.OnClickListener() {
-
+			//Launch the intent to get a GPS signal
 			public void onClick(View v) {
-				//				Bundle bundle = new Bundle();
-				//Bundle bundle = new Bundle();
 				Intent intent = new Intent(FlamingoActivity.this, GeoPointActivity.class);
 				startActivityForResult(intent, REQUEST_GEODATA);
 			}
@@ -83,14 +86,10 @@ public class FlamingoActivity extends Activity {
 				//get the agreed estimate
 				EditText et_agreed = (EditText)findViewById(R.id.estimate);
 				Integer rec_agreed = Integer.parseInt(et_agreed.getText().toString());
-
 				//Get the spinner value
 				Spinner lakeSpinner = (Spinner) findViewById(R.id.spinner);
 				String spinnerState = lakeNames[lakeSpinner.getSelectedItemPosition()];
-
-				
 				// Insert record
-				
 				SQLiteDatabase db = ((FlamingoApplication) getApplication()).mOpenHelper.getWritableDatabase();
 				
 				SQLiteStatement st = db.compileStatement("INSERT INTO report (" +
@@ -108,8 +107,7 @@ public class FlamingoActivity extends Activity {
 						"altitude," +
 						"accuracy," +
 						"photo_identifier" +
-						") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
-				
+						") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");	
 				st.bindDouble(1, rec_latitude);
 				st.bindDouble(2, rec_longitude);
 				st.bindLong(3, rec_fixtime);
@@ -121,22 +119,21 @@ public class FlamingoActivity extends Activity {
 				st.bindDouble(9, rec_altitude);
 				st.bindDouble(10, rec_accuracy);
 				st.bindString(11, rec_jpegpath);
-				
-				long rowid = st.executeInsert();
-				
+				//long rowid = st.executeInsert();
 				st.clearBindings();
-				
+				//Give user feedback!
 				Toast.makeText(FlamingoActivity.this, "Report saved!", Toast.LENGTH_LONG).show();
-				
 				resetForm();
-				
-				db.close();
-				
+				db.close();	
 			}
 		});
-
 	}
 	
+	/**
+	 * 
+	 * 
+	 * 
+	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if ((resultCode == Activity.RESULT_OK) && (data != null) && (requestCode == REQUEST_PHOTO)) {
@@ -144,9 +141,7 @@ public class FlamingoActivity extends Activity {
 			if (bundle != null) {
 				String jpegpath = bundle.getString("jpegpath");
 				rec_jpegpath = jpegpath;
-				
 				Toast.makeText(FlamingoActivity.this,"Image file path stored", Toast.LENGTH_LONG).show();
-
 			}
 		} else if ((resultCode == Activity.RESULT_CANCELED) && (requestCode == REQUEST_PHOTO)) {
 			Toast.makeText(FlamingoActivity.this,"Image Capture Cancelled!", Toast.LENGTH_LONG).show();
@@ -167,10 +162,12 @@ public class FlamingoActivity extends Activity {
 			}
 		} else if ((resultCode == Activity.RESULT_CANCELED) && (requestCode == REQUEST_GEODATA)) {
 			Toast.makeText(FlamingoActivity.this, "GPS Acquisition Cancelled!", Toast.LENGTH_LONG).show();
-		}
-		
+		}	
 	}
 	
+	/**
+	 * This function creates the navigational menu when the menu button is pressed
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -178,9 +175,14 @@ public class FlamingoActivity extends Activity {
 		return true;
 	}
 	
+	/**
+	 * Essentially a button listener Android-ified. The MenuItem is passed as an argument
+	 * causing an intent to call the review screen. 
+	 * 
+	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
+		switch (item.getItemId()){
 		case R.id.review:
 			Intent intent = new Intent(FlamingoActivity.this, ReviewActivity.class);
 			startActivity(intent);
@@ -221,6 +223,10 @@ public class FlamingoActivity extends Activity {
 		super.onDestroy();
 	}
 	
+	/**
+	 * Once the report is submitted reset the local values held and reset the form
+	 * 
+	 */
 	protected void resetForm() {
 		rec_gps_valid = false;
 		rec_latitude = 0.0;
@@ -239,9 +245,5 @@ public class FlamingoActivity extends Activity {
 		et_upper.setText("");
 		et_agreed.setText("");
 		// Don't reset lake
-		
-
 	}
 }
-
-

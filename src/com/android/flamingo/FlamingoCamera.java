@@ -15,8 +15,6 @@ import java.util.UUID;
 
 import com.android.flamingo.Preview;
 import com.android.flamingo.R;
-import com.android.flamingo.R.id;
-import com.android.flamingo.R.layout;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -28,7 +26,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 public class FlamingoCamera extends Activity {
